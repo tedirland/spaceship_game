@@ -1,5 +1,6 @@
-use crate::movement::Velocity;
 use bevy::prelude::*;
+
+use crate::movement::Velocity;
 
 const STARTING_TRANSLATION: Vec3 = Vec3::new(0.0, 0.0, -20.0);
 const STARTING_VELOCITY: Vec3 = Vec3::new(0.0, 0.0, 1.0);
@@ -18,7 +19,6 @@ impl Plugin for SpaceshipPlugin {
     }
 }
 
-// this is the most common way to spawn a 3D model
 fn spawn_spaceship(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(SpaceshipBundle {
         velocity: Velocity {
