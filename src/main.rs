@@ -1,9 +1,11 @@
+mod asset_loader;
 mod asteroids;
 mod camera;
 mod debug;
 mod movement;
 mod spaceship;
 
+use asset_loader::AssetLoaderPlugin;
 use asteroids::AsteroidPlugin;
 use bevy::prelude::*;
 use camera::CameraPlugin;
@@ -20,6 +22,7 @@ fn main() {
             brightness: 0.75,
         })
         .add_plugins(DefaultPlugins)
+        .add_plugins(AssetLoaderPlugin)
         // User configured plugins
         .add_plugins(SpaceshipPlugin)
         .add_plugins(CameraPlugin)
