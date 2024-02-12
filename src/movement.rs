@@ -5,6 +5,31 @@ pub struct Velocity {
     pub value: Vec3,
 }
 
+// The speed of an entity in a specific direction
+impl Velocity {
+    pub fn new(value: Vec3) -> Self {
+        Self { value }
+    }
+}
+
+#[derive(Component, Debug)]
+pub struct Acceleration {
+    pub value: Vec3,
+}
+// The rate at which Velocity changes
+impl Acceleration {
+    pub fn new(value: Vec3) -> Self {
+        Self { value }
+    }
+}
+
+#[derive(Bundle)]
+pub struct MovingObjectBundle {
+    pub velocity: Velocity,
+    pub acceleration: Acceleration,
+    pub model: SceneBundle,
+}
+
 pub struct MovementPlugin;
 
 impl Plugin for MovementPlugin {
