@@ -8,11 +8,13 @@ use crate::{
 const STARTING_TRANSLATION: Vec3 = Vec3::new(0.0, 0.0, -20.0);
 const STARTING_VELOCITY: Vec3 = Vec3::new(0.0, 0.0, 1.0);
 const SPACESHIP_SPEED: f32 = 25.0;
-const SPACESHIP_ROLL_SPEED: f32 = 25.0;
-const SPACESHIP_ROTATION_SPEED: f32 = 25.0;
+const SPACESHIP_ROLL_SPEED: f32 = 10.0;
+const SPACESHIP_ROTATION_SPEED: f32 = 5.0;
 
 #[derive(Component, Debug)]
 pub struct SpaceShip;
+#[derive(Component, Debug)]
+pub struct SpaceShipMissile;
 
 pub struct SpaceshipPlugin;
 
@@ -49,12 +51,49 @@ fn spaceship_movement_controls(
     let mut roll: f32 = 0.0;
     let mut movement: f32 = 0.0;
 
+    if keyboard_input.pressed(KeyCode::D) {
+        rotation = -SPACESHIP_ROTATION_SPEED * time.delta_seconds();
+    } else if keyboard_input.pressed(KeyCode::A) {
+        rotation = SPACESHIP_ROTATION_SPEED * time.delta_seconds();
+    }
     if keyboard_input.pressed(KeyCode::S) {
         movement = -SPACESHIP_SPEED;
     } else if keyboard_input.pressed(KeyCode::W) {
         movement = SPACESHIP_SPEED
     }
+    if keyboard_input.pressed(KeyCode::ShiftLeft) {
+        roll = -SPACESHIP_ROLL_SPEED * time.delta_seconds();
+    } else if keyboard_input.pressed(KeyCode::ControlLeft) {
+        roll = SPACESHIP_ROLL_SPEED * time.delta_seconds();
+    };
+    // Rotate around y axis
+    // Ignore the z-axis rotation applied below
+    transform.rotate_y(rotation);
+
+    // rotate around the local Z-axis
+    // The rotation is reletaive to the current rotation
+    transform.rotate_local_z(roll);
+
     // update the spaceship's velocity based on new direction;
     // check out blender 3d modeling software
     velocity.value = -transform.forward() * movement;
+}
+
+fn spaceship_weapon_controls(
+    mut commands: Commands,
+    query: Query<&Transform, With<SpaceShip>>,
+    keyboard_input: Res<Input<KeyCode>>,
+    scene_assets: Res<SceneAssets>,
+) {
+    let transform = query.single();
+    if keyboard_input.pressed(KeyCode::Space) {
+        commands.spawn((
+            MovingObjectBundle {
+                velocity: todo!(),
+                acceleration: todo!(),
+                model: SceneBundle::default(),
+            },
+            SpaceShipMissile,
+        ));
+    }
 }
