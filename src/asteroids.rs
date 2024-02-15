@@ -5,6 +5,7 @@ use rand::Rng;
 
 use crate::{
     asset_loader::SceneAssets,
+    collission_detection::Collider,
     movement::{Acceleration, MovingObjectBundle, Velocity},
 };
 
@@ -70,4 +71,20 @@ fn spawn_asteriods(
         },
         Asteroid,
     ));
+}
+
+fn handle_asteroid_collisions(
+    mut commands: Commands,
+    query: Query<(Entity, &Collider), With<Asteroid>>,
+) {
+    for (entity, collider) in query.iter() {
+        for &collided_entity in collider.colliding_entities.iter() {
+            // Asteroid collided with another Asteroid
+            if query.get(collided_entity).is_ok() {
+                continue;
+            }
+            // Despawn the Asteroid
+            commands.entity(entity).despawn_recursive();
+        }
+    }
 }
