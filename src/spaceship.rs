@@ -11,9 +11,10 @@ const STARTING_VELOCITY: Vec3 = Vec3::new(0.0, 0.0, 1.0);
 const SPACESHIP_SPEED: f32 = 25.0;
 const SPACESHIP_ROLL_SPEED: f32 = 10.0;
 const SPACESHIP_ROTATION_SPEED: f32 = 5.0;
+const SPACESHIP_RADIUS: f32 = 5.0;
 const MISSILE_SPEED: f32 = 50.0;
 const MISSILE_FORWARD_SPAWN_TRANSLATION: f32 = 7.5;
-const RADIUS: f32 = 2.5;
+const MISSILE_RADIUS: f32 = 1.0;
 
 #[derive(Component, Debug)]
 pub struct SpaceShip;
@@ -35,7 +36,7 @@ fn spawn_spaceship(mut commands: Commands, scene_assets: Res<SceneAssets>) {
     commands.spawn((
         MovingObjectBundle {
             velocity: Velocity::new(Vec3::ZERO),
-            collider: Collider::new(RADIUS),
+            collider: Collider::new(SPACESHIP_RADIUS),
             acceleration: Acceleration::new(Vec3::ZERO),
             model: SceneBundle {
                 scene: scene_assets.spaceship.clone(),
@@ -97,7 +98,7 @@ fn spaceship_weapon_controls(
         commands.spawn((
             MovingObjectBundle {
                 velocity: Velocity::new(-transform.forward() * MISSILE_SPEED),
-                collider: Collider::new(RADIUS),
+                collider: Collider::new(MISSILE_RADIUS),
                 acceleration: Acceleration::new(Vec3::ZERO),
                 model: SceneBundle {
                     scene: scene_assets.missiles.clone(),
