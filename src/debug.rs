@@ -1,9 +1,11 @@
 use bevy::prelude::*;
 
+use crate::schedule::InGameSet;
+
 pub struct DebugPlugin;
 impl Plugin for DebugPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, print_transform);
+        app.add_systems(Startup, print_transform.after(InGameSet::EntityUpdates));
     }
 }
 
