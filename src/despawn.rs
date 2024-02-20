@@ -19,7 +19,7 @@ fn despawn_far_away_entities(mut commands: Commands, query: Query<(Entity, &Glob
     for (entity, transform) in query.iter() {
         let distance = transform.translation().distance(Vec3::ZERO);
 
-        // Entity is far away from the camera's viewport
+        // Entity is far away from the camera's viewport.
         if distance > DESPAWN_DISTANCE {
             commands.entity(entity).despawn_recursive();
         }
