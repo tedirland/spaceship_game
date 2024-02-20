@@ -4,6 +4,7 @@ mod camera;
 mod collission_detection;
 mod debug;
 mod despawn;
+mod health;
 mod movement;
 mod schedule;
 mod spaceship;
